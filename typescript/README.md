@@ -1,5 +1,4 @@
-Interview Assessment
-====================
+# Interview Assessment
 
 This is a simple assessment to gauge your knowledge of TypeScript and the core
 language features of JavaScript. In this assessment, you will be making a simple
@@ -18,7 +17,7 @@ dependency injection through constructor injection.
 ## Requirements
 
 | Points | Requirement                                                                                    |
-|--------|------------------------------------------------------------------------------------------------|
+| ------ | ---------------------------------------------------------------------------------------------- |
 | 10     | The library should have a `Container` class that contains registered services.                 |
 | 5      | The `Container` class should have a `register` method to register services.                    |
 | 10     | The `Container` class should have a `compile` method to compile services.                      |
@@ -36,45 +35,38 @@ dependency injection through constructor injection.
 
 ```ts
 @Service()
-class Logger
-{
-    public log(message: string)
-    {
-        console.log(message);
-    }
+class Logger {
+  public log(message: string) {
+    console.log(message);
+  }
 }
 
 @Service({
-    // Factory function to create the service asynchronously.
-    factory: async (constructorArguments) => new ServiceA(...constructorArguments),
+  // Factory function to create the service asynchronously.
+  factory: async (constructorArguments) =>
+    new ServiceA(...constructorArguments),
 })
-class ServiceA
-{
-    constructor(private logger: Logger)
-    {
-        this.logger.log('ServiceA created');
-    }
+class ServiceA {
+  constructor(private logger: Logger) {
+    this.logger.log('ServiceA created');
+  }
 
-    public doSomething()
-    {
-        this.logger.log('ServiceA doing something');
-    }
+  public doSomething() {
+    this.logger.log('ServiceA doing something');
+  }
 }
 
 @Service()
-class ServiceB
-{
-    constructor(private logger: Logger)
-    {
-        this.logger.log('ServiceB created');
-    }
+class ServiceB {
+  constructor(private logger: Logger) {
+    this.logger.log('ServiceB created');
+  }
 
-    public doSomething()
-    {
-        this.logger.log('ServiceB doing something');
+  public doSomething() {
+    this.logger.log('ServiceB doing something');
 
-        return this.serviceA.doSomething();
-    }
+    return this.serviceA.doSomething();
+  }
 }
 
 const container = await Container.Compile();
@@ -89,25 +81,24 @@ container.get(ServiceB).doSomething();
 ```
 
 ### Optional use-case for injection of services in non-service classes.
+
 ```ts
-export class MyWebComponent
-{
-   // Allow the service to be injected through a property. Although optional
-   // for the assessment, this feature is nice to have to support existing
-   // frameworks that do not support constructor injection. For example when
-   // working with WebComponents (StencilJS, React, etc.) Note that the class
-   // itself doesn't neccessarily need to be a registered service for this to
-   // work.
-   @Inject private serviceA: ServiceA;
-   
-   public connectedCallback()
-   {
-       // This assumes that the container was previously compiled elsewhere in
-       // the application. For this assessment, you can assume that the app has
-       // one container that is globally available and compiled at the start of
-       // the application, e.g. before rendering the first component.
-       this.serviceA.doSomething();
-   }
+export class MyWebComponent {
+  // Allow the service to be injected through a property. Although optional
+  // for the assessment, this feature is nice to have to support existing
+  // frameworks that do not support constructor injection. For example when
+  // working with WebComponents (StencilJS, React, etc.) Note that the class
+  // itself doesn't neccessarily need to be a registered service for this to
+  // work.
+  @Inject private serviceA: ServiceA;
+
+  public connectedCallback() {
+    // This assumes that the container was previously compiled elsewhere in
+    // the application. For this assessment, you can assume that the app has
+    // one container that is globally available and compiled at the start of
+    // the application, e.g. before rendering the first component.
+    this.serviceA.doSomething();
+  }
 }
 ```
 

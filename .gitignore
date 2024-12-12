@@ -1,3 +1,6 @@
 .idea/
 node_modules/
 vendor/
+**/dist
+**/build
+**/*.lock
